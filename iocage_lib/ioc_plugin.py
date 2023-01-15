@@ -56,6 +56,7 @@ import texttable
 
 from iocage_lib.cache import cache
 from iocage_lib.dataset import Dataset
+from iocage_lib.utils import safe_extractall
 
 
 GIT_LOCK = threading.Lock()
@@ -157,7 +158,7 @@ class IOCPlugin(object):
                             shutil.copyfileobj(r.raw, f)
 
                     with tarfile.open(packagesite_txz_path) as p_file:
-                        p_file.extractall(path=tmpdir)
+                        safe_extractall(p_file, path=tmpdir)
 
                     packagesite_path = os.path.join(tmpdir, 'packagesite.yaml')
                     if not os.path.exists(packagesite_path):
