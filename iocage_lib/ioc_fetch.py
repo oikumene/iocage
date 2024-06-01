@@ -862,8 +862,6 @@ class IOCFetch:
                 _callback=self.callback,
                 silent=self.silent)
 
-        shutil.copy("/etc/resolv.conf", f"{mount_root}/etc/resolv.conf")
-
         path = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:'\
                '/usr/local/bin:/root/bin'
         fetch_env = {
@@ -893,7 +891,7 @@ class IOCFetch:
         su.Popen(cmd).communicate()
         if self.verify:
             f = "https://raw.githubusercontent.com/freebsd/freebsd-src" \
-                "/master/usr.sbin/freebsd-update/freebsd-update.sh"
+                "/main/usr.sbin/freebsd-update/freebsd-update.sh"
 
             tmp = tempfile.NamedTemporaryFile(delete=False)
             with urllib.request.urlopen(f) as fbsd_update:

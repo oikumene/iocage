@@ -137,9 +137,11 @@ class IOCStart(object):
         allow_mlock = self.conf["allow_mlock"]
         allow_mount = self.conf["allow_mount"]
         allow_mount_devfs = self.conf["allow_mount_devfs"]
+        allow_mount_fdescfs = self.conf["allow_mount_fdescfs"]
         allow_mount_fusefs = self.conf["allow_mount_fusefs"]
         allow_mount_nullfs = self.conf["allow_mount_nullfs"]
         allow_mount_procfs = self.conf["allow_mount_procfs"]
+        allow_mount_linprocfs = self.conf["allow_mount_linprocfs"]
         allow_mount_tmpfs = self.conf["allow_mount_tmpfs"]
         allow_mount_zfs = self.conf["allow_mount_zfs"]
         allow_quotas = self.conf["allow_quotas"]
@@ -335,9 +337,11 @@ class IOCStart(object):
         if userland_version <= 9.3:
             tmpfs = ""
             fdescfs = ""
+            _allow_mount_fdescfs = ""
         else:
             tmpfs = f"allow.mount.tmpfs={allow_mount_tmpfs}"
             fdescfs = f"mount.fdescfs={mount_fdescfs}"
+            _allow_mount_fdescfs = f"allow.mount.fdescfs={allow_mount_fdescfs}"
 
         # FreeBSD 10.3 and under do not support this.
 
@@ -541,7 +545,7 @@ class IOCStart(object):
 
         parameters = [
             fdescfs, _allow_mlock, tmpfs,
-            _allow_mount_fusefs, _allow_vmm,
+            _allow_mount_fdescfs, _allow_mount_fusefs, _allow_vmm,
             f"allow.set_hostname={allow_set_hostname}",
             f"mount.devfs={mount_devfs}",
             f"allow.raw_sockets={allow_raw_sockets}",
@@ -553,6 +557,7 @@ class IOCStart(object):
             f"allow.mount.devfs={allow_mount_devfs}",
             f"allow.mount.nullfs={allow_mount_nullfs}",
             f"allow.mount.procfs={allow_mount_procfs}",
+            f"allow.mount.linprocfs={allow_mount_linprocfs}",
             f"allow.mount.zfs={allow_mount_zfs}"
         ]
 

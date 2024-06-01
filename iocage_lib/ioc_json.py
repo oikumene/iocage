@@ -199,7 +199,7 @@ class IOCCpuset(object):
             pass
         else:
             result = re.findall(
-                r'.*mask:.*(\d+)$',
+                r'.*mask:.*?(\d+)$',
                 output.stdout.split('\n')[0]
             )
             if result:
@@ -434,7 +434,7 @@ class IOCConfiguration:
     @staticmethod
     def get_version():
         """Sets the iocage configuration version."""
-        version = '28'
+        version = '29'
 
         return version
 
@@ -908,6 +908,10 @@ class IOCConfiguration:
         if not conf.get("vnet_default_mtu"):
             conf["vnet_default_mtu"] = '1500'
 
+        # Version 29 key
+        if not conf.get('allow_mount_fdescfs'):
+            conf['allow_mount_fdescfs'] = 0
+
         if not default:
             conf.update(jail_conf)
 
@@ -1164,9 +1168,11 @@ class IOCConfiguration:
             'allow_mlock': 0,
             'allow_mount': 0,
             'allow_mount_devfs': 0,
+            'allow_mount_fdescfs': 0,
             'allow_mount_fusefs': 0,
             'allow_mount_nullfs': 0,
             'allow_mount_procfs': 0,
+            'allow_mount_linprocfs': 0,
             'allow_mount_tmpfs': 0,
             'allow_mount_zfs': 0,
             'allow_quotas': 0,
@@ -1336,6 +1342,7 @@ class IOCJson(IOCConfiguration):
         'allow_mount_nullfs',
         'allow_mount_fusefs',
         'allow_mount_devfs',
+        'allow_mount_fdescfs',
         'allow_mount',
         'allow_mlock',
         'allow_chflags',
@@ -2083,9 +2090,11 @@ class IOCJson(IOCConfiguration):
             "allow_mlock": truth_variations,
             "allow_mount": truth_variations,
             "allow_mount_devfs": truth_variations,
+            "allow_mount_fdescfs": truth_variations,
             "allow_mount_fusefs": truth_variations,
             "allow_mount_nullfs": truth_variations,
             "allow_mount_procfs": truth_variations,
+            "allow_mount_linprocfs": truth_variations,
             "allow_mount_tmpfs": truth_variations,
             "allow_mount_zfs": truth_variations,
             "allow_quotas": truth_variations,
